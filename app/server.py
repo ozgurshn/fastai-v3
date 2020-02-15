@@ -358,8 +358,8 @@ async def analyze(request):
 #     plt.imshow(imgArray)
 #     plt.savefig("spec.png")
     print("File saved successfully")
-    #return FileResponse('test.png',media_type='image/png')
-    return FileResponse('result.png')
+    return FileResponse('result.png',media_type='image/png')
+    #return FileResponse('result.png')
     
     
 
