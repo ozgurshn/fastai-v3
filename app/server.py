@@ -6,9 +6,10 @@ from fastai.vision import *
 from io import BytesIO
 from starlette.applications import Starlette
 from starlette.middleware.cors import CORSMiddleware
-from starlette.responses import HTMLResponse, JSONResponse
+from starlette.responses import HTMLResponse, JSONResponse, FileResponse
 from starlette.staticfiles import StaticFiles
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 export_file_url = 'https://www.dropbox.com/s/vuq28c2toeu9ep4/e94-128.pkl?dl=1'
@@ -350,12 +351,17 @@ async def analyze(request):
     
     output = learn.model.G_B(processedImg)
     output = (1+output)/2
+    imgArray = output[0].permute(1,2,0)
+    #imgArray = output[0].permute(1,2,0).detach().numpy()
+    #imageResult = Image.fromarray(np.uint8((imgArray)*255))
     
-    imgArray = output[0].permute(1,2,0).detach().numpy()
-    imageResult = Image.fromarray(np.uint8((imgArray)*255))
-
+    plt.imshow(imgArray)
+    plt.savefig("spec.png")
+    print("File saved successfully")
+    #return FileResponse('test.png',media_type='image/png')
+    return FileResponse('spec.png')
     
-    return imageResult
+    
 
 
 if __name__ == '__main__':
