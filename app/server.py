@@ -348,8 +348,8 @@ async def analyze(request):
     img_bytes = await (img_data['file'].read())
     img = open_image(BytesIO(img_bytes))
     processedImg = preprocessing(img)
-    
-    output = learn.model.G_B(processedImg)
+    with torch.no_grad():
+        output = learn.model.G_B(processedImg)
     output = (1+output)/2
     imgArray = output[0].permute(1,2,0)
     #imgArray = output[0].permute(1,2,0).detach().numpy()
