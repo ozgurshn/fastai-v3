@@ -8,10 +8,12 @@ from starlette.applications import Starlette
 from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import HTMLResponse, JSONResponse
 from starlette.staticfiles import StaticFiles
+from PIL import Image
+import numpy as np
 
 
-export_file_url = 'https://www.dropbox.com/s/i17egiz75nlkark/export.pkl?dl=1'
-export_file_name = 'export.pkl'
+export_file_url = 'https://www.dropbox.com/s/vuq28c2toeu9ep4/e94-128.pkl?dl=1'
+export_file_name = 'e94-128.pkl'
 
 #classes = ['black', 'grizzly', 'teddys']
 path = Path(__file__).parent
@@ -323,6 +325,17 @@ learn = loop.run_until_complete(asyncio.gather(*tasks))[0]
 loop.close()
 
 
+def preprocessing(image):
+   # image_file = client.file(image_path).getFile().name
+    #image_file = Image.open("gray.jpg").convert('L')
+    #image = open_image(image_path)
+    # Normalize and resize image
+    tfms = get_transforms()[1]
+    image = image.apply_tfms(tfms, size=128)
+    processImg = torch.stack([image.data], 0)
+    processImg = 2. * (processImg - 0.5)
+    return processImg
+
 @app.route('/')
 async def homepage(request):
     html_file = path / 'view' / 'index.html'
@@ -334,11 +347,16 @@ async def analyze(request):
     img_data = await request.form()
     img_bytes = await (img_data['file'].read())
     img = open_image(BytesIO(img_bytes))
+    processedImg = preprocessing(img)
+    
+    output = learn.model.G_B(processedImg)
+    output = (1+output)/2
+    
+    imgArray = output[0].permute(1,2,0).detach().numpy()
+    imageResult = Image.fromarray(np.uint8((imgArray)*255))
 
-
-
-    prediction = learn.predict(img)
-    return prediction
+    
+    return imageResult
 
 
 if __name__ == '__main__':
