@@ -26,18 +26,14 @@ function analyze() {
   xhr.onerror = function() {
     alert(xhr.responseText);
   };
-  // xhr.onload = function(e) {
-  //   if (this.readyState === 4) {
-  //     var response = JSON.parse(e.target.responseText);
-  //     el("result-label").innerHTML = `Result = ${response["result"]}`;
-  //   }
-  //   el("analyze-button").innerHTML = "Analyze";
-  // };
 
   xhr.onload = function(e) {
     if (this.readyState === 4) {
-  const blobUrl = URL.createObjectURL(e.target.response);
-  //el("image-picked").src = 'data:image/png;base64,'+b64Response;
+      var binaryData = [];
+      binaryData.push(e.target.response);
+      const blobUrl = URL.createObjectURL(new Blob(binaryData, {type: "image/png"}))
+      //const blobUrl = URL.createObjectURL(e.target.response);
+      //el("image-picked").src = 'data:image/png;base64,'+b64Response;
   el("image-result").src = blobUrl;
     }
     el("analyze-button").innerHTML = "Analyze";
