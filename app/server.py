@@ -353,13 +353,13 @@ async def analyze(request):
     output = (1+output)/2
     imgArray = output[0].permute(1,2,0)
     #imgArray = output[0].permute(1,2,0).detach().numpy()
-    #imageResult = Image.fromarray(np.uint8((imgArray)*255))
-    
-    plt.imshow(imgArray)
-    plt.savefig("spec.png")
+    imageResult = Image.fromarray(np.uint8((imgArray)*255))
+    imageResult.save('result.png')
+#     plt.imshow(imgArray)
+#     plt.savefig("spec.png")
     print("File saved successfully")
     #return FileResponse('test.png',media_type='image/png')
-    return FileResponse('spec.png')
+    return FileResponse('result.png')
     
     
 
