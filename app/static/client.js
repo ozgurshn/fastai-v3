@@ -26,12 +26,22 @@ function analyze() {
   xhr.onerror = function() {
     alert(xhr.responseText);
   };
+  // xhr.onload = function(e) {
+  //   if (this.readyState === 4) {
+  //     var response = JSON.parse(e.target.responseText);
+  //     el("result-label").innerHTML = `Result = ${response["result"]}`;
+  //   }
+  //   el("analyze-button").innerHTML = "Analyze";
+  // };
+
   xhr.onload = function(e) {
     if (this.readyState === 4) {
-      var response = JSON.parse(e.target.responseText);
-      el("result-label").innerHTML = `Result = ${response["result"]}`;
+  const blobUrl = URL.createObjectURL(e.target.response);
+  //el("image-picked").src = 'data:image/png;base64,'+b64Response;
+  el("image-result").src = blobUrl;
     }
     el("analyze-button").innerHTML = "Analyze";
+    //el("mel-button").innerHTML = "Generate Mel Spectrogram"
   };
 
   var fileData = new FormData();
