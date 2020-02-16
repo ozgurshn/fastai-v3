@@ -6,7 +6,7 @@ from fastai.vision import *
 from io import BytesIO
 from starlette.applications import Starlette
 from starlette.middleware.cors import CORSMiddleware
-from starlette.responses import HTMLResponse, JSONResponse, FileResponse
+from starlette.responses import HTMLResponse, JSONResponse, FileResponse, StreamingResponse
 from starlette.staticfiles import StaticFiles
 import numpy as np
 import matplotlib.pyplot as plt
@@ -354,11 +354,18 @@ async def analyze(request):
     imgArray = output[0].permute(1,2,0)
     #imgArray = output[0].permute(1,2,0).detach().numpy()
     imageResult = PIL.Image.fromarray(np.uint8((imgArray)*255))
-    imageResult.save('result.png')
+    #imageResult.save('result.png')
 #     plt.imshow(imgArray)
 #     plt.savefig("spec.png")
     print("File saved successfully")
-    return FileResponse('result.png',media_type='image/png')
+    
+    imgByteArr = io.BytesIO()
+    imageResult.save(imgByteArr, format='PNG')
+    imgByteArr = imgByteArr.getvalue()
+
+    
+    return StreamingResponse(BytesIO(imgByteArr), media_type="image/png")
+    #return FileResponse('result.png',media_type='image/png')
     #return FileResponse('result.png')
     
     
