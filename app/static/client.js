@@ -16,9 +16,9 @@ function showPicked(input) {
 
 function analyze() {
   var uploadFiles = el("file-input").files;
-  if (uploadFiles.length !== 1) alert("Please select a file to analyze!");
+  if (uploadFiles.length !== 1) alert("Please select an image to style!");
 
-  el("analyze-button").innerHTML = "Analyzing...";
+  el("analyze-button").innerHTML = "Drawing...";
   var xhr = new XMLHttpRequest();
   var loc = window.location;
   xhr.open("POST", `${loc.protocol}//${loc.hostname}:${loc.port}/analyze`,
@@ -26,18 +26,14 @@ function analyze() {
   xhr.onerror = function() {
     alert(xhr.responseText);
   };
+  xhr.responseType="blob"
 
   xhr.onload = function(e) {
     if (this.readyState === 4) {
-      var binaryData = [];
-      binaryData.push(e.target.response);
-      const blobUrl = URL.createObjectURL(new Blob(binaryData, {type: "image/png"}))
-      //const blobUrl = URL.createObjectURL(e.target.response);
-      //el("image-picked").src = 'data:image/png;base64,'+b64Response;
-  el("image-result").src = blobUrl;
+       const blobUrl = URL.createObjectURL(e.target.response);
+	     el("image-picked").src = blobUrl;
     }
-    el("analyze-button").innerHTML = "Analyze";
-    //el("mel-button").innerHTML = "Generate Mel Spectrogram"
+    el("analyze-button").innerHTML = "Draw";
   };
 
   var fileData = new FormData();
