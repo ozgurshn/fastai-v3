@@ -12,8 +12,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-export_file_url = 'https://www.dropbox.com/s/i5z7eoe204ru1m8/exportv5.pkl?dl=1'
-export_file_name = 'exportv5.pkl'
+export_file_url = 'https://www.dropbox.com/s/7bkns2m1f3z17dv/exportv6.pkl?dl=1'
+export_file_name = 'exportv6.pkl'
 
 path = Path(__file__).parent
 
