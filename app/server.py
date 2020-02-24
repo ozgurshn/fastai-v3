@@ -12,10 +12,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-export_file_url = 'https://www.dropbox.com/s/vuq28c2toeu9ep4/e94-128.pkl?dl=1'
-export_file_name = 'e94-128.pkl'
+export_file_url = 'https://www.dropbox.com/s/i5z7eoe204ru1m8/exportv5.pkl?dl=1'
+export_file_name = 'exportv5.pkl'
 
-#classes = ['black', 'grizzly', 'teddys']
 path = Path(__file__).parent
 
 app = Starlette()
