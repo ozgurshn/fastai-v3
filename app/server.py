@@ -127,7 +127,7 @@ class ResnetBlock(nn.Module):
 
 
     def resnet_generator(ch_in:int, ch_out:int, n_ftrs:int=64, norm_layer:nn.Module=None, 
-                     dropout:float=0., n_blocks:int=6, pad_mode:str='reflection')->nn.Module:
+                     dropout:float=0., n_blocks:int=12, pad_mode:str='reflection')->nn.Module:
         norm_layer = ifnone(norm_layer, nn.InstanceNorm2d)
         bias = (norm_layer == nn.InstanceNorm2d)
         layers = pad_conv_norm_relu(ch_in, n_ftrs, 'reflection', norm_layer, pad=3, ks=7, bias=bias)
@@ -174,7 +174,7 @@ class ResnetBlock(nn.Module):
 
 class CycleGAN(nn.Module):
     
-    def __init__(self, ch_in:int, ch_out:int, n_features:int=64, disc_layers:int=3, gen_blocks:int=6, lsgan:bool=True, 
+    def __init__(self, ch_in:int, ch_out:int, n_features:int=64, disc_layers:int=3, gen_blocks:int=12, lsgan:bool=True, 
                  drop:float=0., norm_layer:nn.Module=None):
         super().__init__()
         self.D_A = discriminator(ch_in, n_features, disc_layers, norm_layer, sigmoid=not lsgan)
